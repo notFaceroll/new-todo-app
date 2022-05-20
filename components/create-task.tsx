@@ -1,8 +1,7 @@
-import React, { useContext, useState } from 'react'
-import TodoContext from '../store/todo-context';
+import React, { useContext, useState } from "react";
+import TodoContext from "../store/todo-context";
 
 import { PlusCircle } from "phosphor-react";
-
 
 interface CreateTodoProps {
   submitText: (text: string) => void;
@@ -23,12 +22,9 @@ export const CreateTodo = ({ submitText }: CreateTodoProps) => {
   };
 
   return (
-    <form
-      onSubmit={submitHandler}
-      className="flex items-center gap-2 mb-4 relative"
-    >
+    <form onSubmit={submitHandler} className="relative flex items-center gap-2">
       <input
-        className="flex-1 p-2 pl-10 my-2 rounded outline-cyan-600 bg-sky-100 placeholder:text-cyan-700"
+        className="flex-1 p-3 pl-11 my-2 rounded-lg text-neutral-200 focus:outline-disc-not-so-blurple bg-disc-grey placeholder:text-neutral-200"
         value={todoText}
         onChange={userInputHandler}
         placeholder="Add your new task here!"
@@ -36,11 +32,12 @@ export const CreateTodo = ({ submitText }: CreateTodoProps) => {
         required
       />
       <button
-        disabled={todoCtx?.todosList && todoCtx?.todosList.length > 15}
+        disabled={todoCtx?.todosList && todoCtx?.todosList.length >= 11}
         type="submit"
-        className="absolute flex items-center justify-center left-2 disabled:opacity-75 disabled:cursor-not-allowed"
+        aria-label="Add new task"
+        className="absolute flex items-center justify-center left-3 disabled:opacity-75 disabled:cursor-not-allowed"
       >
-        <PlusCircle size={24} className="text-cyan-600" />
+        <PlusCircle size={24} className="text-disc-online-green" />
       </button>
     </form>
   );

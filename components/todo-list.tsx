@@ -1,15 +1,11 @@
-import React, { useState, useContext } from "react";
-import TodoContext, { useTodoCtx } from "../store/todo-context";
+import React, { Fragment, useContext } from "react";
+import TodoContext from "../store/todo-context";
 
-import { TrashSimple, Square, CheckSquare, PlusCircle } from "phosphor-react";
+import { Trash, Circle, CheckCircle } from "phosphor-react";
 import { motion, AnimatePresence, LayoutGroup } from "framer-motion";
 import { CreateTodo } from "./create-task";
 
-interface Todo {
-  task: string;
-  completed: boolean;
-  id: string;
-}
+import { TodoProvider } from "../store/todo-provider";
 
 const variants = {
   hidden: { opacity: 0 },
@@ -18,84 +14,33 @@ const variants = {
 };
 
 export const TodoList: React.FC = () => {
-  const todoCtx = useContext(TodoContext);
-
-  const [todoText, setTodoText] = useState("");
-  // const [todosList, setTodosList] = useState<Todo[]>([]);
-
-  const userInputHandler = (event: React.ChangeEvent<HTMLInputElement>) => {
-    setTodoText(event.target.value);
-  };
-
-  const submitHandler = (event: React.FormEvent) => {
-    // setTodosList([
-    //   ...todosList,
-    //   {
-    //     task: newTodo,
-    //     completed: false,
-    //     id: Math.random().toString(36).substring(2, 11),
-    //   },
-    // ]);
-    event.preventDefault();
-    todoCtx?.addTodo(todoText);
-    setTodoText("");
-  };
-
+  const { addTodo, deleteTodo, toggleTodo, todosList } =
+    useContext(TodoContext);
+  const pendingTasks = todosList.filter((todo) => !todo.completed).length;
   const submitText = (text: string) => {
-    todoCtx?.addTodo(text);
+    addTodo(text);
   };
 
   const deleteTodoHandler = (id: string) => {
-    // const updatedList = todosList.filter((todo) => todo.id !== id);
-    // setTodosList(updatedList);
-    todoCtx?.deleteTodo(id);
+    deleteTodo(id);
   };
 
   const todoHandler = (id: string) => {
-    // const updatedList = todosList.map((todo) => {
-    //   if (todo.id === id) {
-    //     todo.completed = !todo.completed;
-    //     return todo;
-    //   }
-    //   return todo;
-    // });
-    // setTodosList(updatedList);
-    todoCtx?.toggleTodo(id);
+    toggleTodo(id);
   };
 
   return (
-    <main className="w-4/5 overflow-auto flex flex-col max-w-lg h-96 p-4 border rounded shadow-lg bg-sky-200 border-cyan-600  relative">
-      {/* <form
-        onSubmit={submitHandler}
-        className="flex items-center gap-2 mb-4 relative"
-      >
-        <input
-          className="flex-1 p-2 pl-10 my-2 rounded outline-cyan-600 bg-sky-100 placeholder:text-cyan-700"
-          value={todoText}
-          onChange={userInputHandler}
-          placeholder="Add your new task here!"
-          maxLength={32}
-          required
-        />
-        <button
-          disabled={todoCtx?.todosList && todoCtx?.todosList.length > 15}
-          type="submit"
-          className="absolute flex items-center justify-center left-2 disabled:opacity-75 disabled:cursor-not-allowed"
-        >
-          <PlusCircle size={24} className="text-cyan-600" />
-        </button>
-      </form> */}
-      <CreateTodo submitText={submitText} />
+    <main className="relative flex flex-col w-4/5 h-5/6 max-w-xl p-4 overflow-auto border rounded-lg shadow-lg  bg-disc-dark-grey border-disc-not-so-blurple">
       <LayoutGroup>
-        <ul className="overflow-auto h-full">
+        <ul className="h-full overflow-auto text-neutral-200">
           <AnimatePresence>
-            {todoCtx?.todosList.map((todo) => (
+            {todosList.map((todo) => (
               <motion.li
                 variants={variants}
                 initial="hidden"
                 animate="visible"
                 exit="exit"
-                className="flex items-center justify-between p-2 my-2 rounded bg-gradient-to-r from-sky-400 to-cyan-300"
+                className="flex items-center justify-between p-3 my-2 rounded-lg bg-disc-grey"
                 key={todo.id}
                 layout={"position"}
               >
@@ -104,31 +49,44 @@ export const TodoList: React.FC = () => {
                   onClick={() => todoHandler(todo.id)}
                 >
                   {todo.completed ? (
-                    <CheckSquare size={24} className="text-slate-800" />
+                    <CheckCircle size={24} className="text-disc-online-green" />
                   ) : (
-                    <Square size={24} className="text-slate-800" />
+                    <Circle size={24} />
                   )}
                   <span
-                    className={`${
-                      todo.completed ? "line-through" : null
-                    } className="text-slate-800"`}
+                    className={`${todo.completed ? "line-through" : null} ml-1`}
                   >
                     {todo.task}
                   </span>
                 </button>
                 <button
-                  className="p-1 mx-2 rounded bg-sky-100"
+                  className="p-1 rounded"
+                  aria-label="Delete task"
                   onClick={() => {
                     deleteTodoHandler(todo.id);
                   }}
                 >
-                  <TrashSimple className="text-cyan-600" />
+                  <Trash size={20} className=" text-disc-dnd-red" />
                 </button>
               </motion.li>
             ))}
           </AnimatePresence>
         </ul>
       </LayoutGroup>
+      <AnimatePresence>
+        {todosList.length > 0 && (
+          <motion.span
+            className="text-neutral-200 text-center"
+            variants={variants}
+            initial="hidden"
+            animate="visible"
+            exit="exit"
+          >
+            Total tasks - {todosList.length} | Tasks pending - {pendingTasks}
+          </motion.span>
+        )}
+      </AnimatePresence>
+      <CreateTodo submitText={submitText} />
     </main>
   );
 };

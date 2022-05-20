@@ -1,9 +1,9 @@
 import React, { useState } from "react";
 import TodoContext, { Todo } from "./todo-context";
 
-
-
-export const TodoProvider: React.FC<{children: React.ReactNode}> = ({children}) => {
+export const TodoProvider: React.FC<{ children: React.ReactNode }> = ({
+  children,
+}) => {
   const [todosList, setTodosList] = useState<Todo[]>([]);
 
   const addTodo = (text: string) => {
@@ -41,8 +41,6 @@ export const TodoProvider: React.FC<{children: React.ReactNode}> = ({children}) 
     toggleTodo,
   };
   return (
-    <TodoContext.Provider value={todoContext}>
-      {children}
-    </TodoContext.Provider>
+    <TodoContext.Provider value={todoContext}>{children}</TodoContext.Provider>
   );
 };
