@@ -3,7 +3,11 @@ import type { AppProps } from "next/app";
 import { TodoProvider } from "../store/todo-provider";
 
 function MyApp({ Component, pageProps }: AppProps) {
-  return <Component {...pageProps} />;
+  return (
+    <TodoProvider>
+      <Component {...pageProps} />
+    </TodoProvider>
+  );
 }
 
 export default MyApp;

@@ -1,18 +1,38 @@
+import { AnimatePresence, motion } from "framer-motion";
 import React, { useContext } from "react";
 import TodoContext from "../store/todo-context";
 
+const variants = {
+  hidden: { opacity: 0 },
+  visible: { opacity: 1 },
+  exit: { opacity: 0, transition: { duration: 0.2 } },
+};
+
 export const Header = () => {
-  const { todosList } = useContext(TodoContext);
+  const { todosList, clearCompleted } = useContext(TodoContext);
+  const pendingTasks = todosList.filter((todo) => !todo.completed);
 
   return (
-    <header className="absolute top-0 flex items-center w-full h-14 bg-disc-not-quite-black">
+    <header className="flex items-center w-full px-4 h-14 bg-disc-not-quite-black">
       <div className="flex items-center justify-between w-full max-w-screen-xl mx-auto">
         <h1 className="p-1 font-bold border rounded text-neutral-200 bg-disc-not-so-blurple border-neutral-200">
           Taskord
         </h1>
-        <ul className="flex gap-2 mx-4 text-neutral-200">
-          <li>Github</li>
-        </ul>
+        <AnimatePresence>
+          {todosList.length > 0 && (
+            <div className="flex items-center justify-between gap-2">
+              <motion.span
+                className="text-center text-neutral-200"
+                variants={variants}
+                initial="hidden"
+                animate="visible"
+                exit="exit"
+              >
+                Total - {todosList.length} | Pending - {pendingTasks.length}
+              </motion.span>
+            </div>
+          )}
+        </AnimatePresence>
       </div>
     </header>
   );

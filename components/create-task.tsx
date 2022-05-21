@@ -24,7 +24,7 @@ export const CreateTodo = ({ submitText }: CreateTodoProps) => {
   return (
     <form onSubmit={submitHandler} className="relative flex items-center gap-2">
       <input
-        className="flex-1 p-3 pl-11 my-2 rounded-lg text-neutral-200 focus:outline-disc-not-so-blurple bg-disc-grey placeholder:text-neutral-200"
+        className="flex-1 p-3 my-2 rounded-lg pl-11 text-neutral-200 placeholder:text-opacity-50 focus:outline-disc-not-so-blurple bg-disc-grey placeholder:text-neutral-200"
         value={todoText}
         onChange={userInputHandler}
         placeholder="Add your new task here!"
@@ -32,7 +32,7 @@ export const CreateTodo = ({ submitText }: CreateTodoProps) => {
         required
       />
       <button
-        disabled={todoCtx?.todosList && todoCtx?.todosList.length >= 11}
+        disabled={todoCtx?.todosList && todoCtx?.todosList.length >= 10}
         type="submit"
         aria-label="Add new task"
         className="absolute flex items-center justify-center left-3 disabled:opacity-75 disabled:cursor-not-allowed"

@@ -34,11 +34,23 @@ export const TodoProvider: React.FC<{ children: React.ReactNode }> = ({
     setTodosList(updatedList);
   };
 
+  const clearCompleted = () => {
+    const completedTasks = todosList.filter((todo) => todo.completed);
+    if (completedTasks.length === 0) {
+      return;
+    }
+
+    const updatedList = todosList.filter((todo) => !todo.completed);
+
+    setTodosList(updatedList);
+  };
+
   const todoContext = {
     todosList,
     addTodo,
     deleteTodo,
     toggleTodo,
+    clearCompleted,
   };
   return (
     <TodoContext.Provider value={todoContext}>{children}</TodoContext.Provider>

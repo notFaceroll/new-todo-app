@@ -5,8 +5,6 @@ import { Trash, Circle, CheckCircle } from "phosphor-react";
 import { motion, AnimatePresence, LayoutGroup } from "framer-motion";
 import { CreateTodo } from "./create-task";
 
-import { TodoProvider } from "../store/todo-provider";
-
 const variants = {
   hidden: { opacity: 0 },
   visible: { opacity: 1 },
@@ -14,23 +12,13 @@ const variants = {
 };
 
 export const TodoList: React.FC = () => {
-  const { addTodo, deleteTodo, toggleTodo, todosList } =
+  const { addTodo, deleteTodo, toggleTodo, todosList, clearCompleted } =
     useContext(TodoContext);
-  const pendingTasks = todosList.filter((todo) => !todo.completed).length;
-  const submitText = (text: string) => {
-    addTodo(text);
-  };
 
-  const deleteTodoHandler = (id: string) => {
-    deleteTodo(id);
-  };
-
-  const todoHandler = (id: string) => {
-    toggleTodo(id);
-  };
+  const completedTasks = todosList.filter((todo) => todo.completed);
 
   return (
-    <main className="relative flex flex-col w-4/5 h-5/6 max-w-xl p-4 overflow-auto border rounded-lg shadow-lg  bg-disc-dark-grey border-disc-not-so-blurple">
+    <main className="relative flex flex-col w-full h-full max-w-4xl p-4 overflow-auto bg-disc-dark-grey border-disc-not-so-blurple">
       <LayoutGroup>
         <ul className="h-full overflow-auto text-neutral-200">
           <AnimatePresence>
@@ -46,7 +34,7 @@ export const TodoList: React.FC = () => {
               >
                 <button
                   className="flex items-center gap-1"
-                  onClick={() => todoHandler(todo.id)}
+                  onClick={() => toggleTodo(todo.id)}
                 >
                   {todo.completed ? (
                     <CheckCircle size={24} className="text-disc-online-green" />
@@ -63,7 +51,7 @@ export const TodoList: React.FC = () => {
                   className="p-1 rounded"
                   aria-label="Delete task"
                   onClick={() => {
-                    deleteTodoHandler(todo.id);
+                    deleteTodo(todo.id);
                   }}
                 >
                   <Trash size={20} className=" text-disc-dnd-red" />
@@ -74,19 +62,20 @@ export const TodoList: React.FC = () => {
         </ul>
       </LayoutGroup>
       <AnimatePresence>
-        {todosList.length > 0 && (
-          <motion.span
-            className="text-neutral-200 text-center"
+        {completedTasks.length > 0 && (
+          <motion.button
             variants={variants}
             initial="hidden"
             animate="visible"
             exit="exit"
+            className="p-1 rounded-lg text-neutral-200 bg-disc-not-so-blurple"
+            onClick={clearCompleted}
           >
-            Total tasks - {todosList.length} | Tasks pending - {pendingTasks}
-          </motion.span>
+            Clear Completed Tasks
+          </motion.button>
         )}
       </AnimatePresence>
-      <CreateTodo submitText={submitText} />
+      <CreateTodo submitText={addTodo} />
     </main>
   );
 };
