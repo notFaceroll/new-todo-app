@@ -1,4 +1,4 @@
-import React, { Fragment, useContext } from "react";
+import React, { useContext } from "react";
 import TodoContext from "../store/todo-context";
 
 import { Trash, Circle, CheckCircle } from "phosphor-react";
@@ -8,6 +8,13 @@ import { CreateTodo } from "./create-task";
 const variants = {
   hidden: { opacity: 0 },
   visible: { opacity: 1 },
+  exit: { opacity: 0, transition: { duration: 0.2 } },
+};
+
+const btnVariants = {
+  hidden: { opacity: 0 },
+  visible: { opacity: 0.8 },
+  hover: { opacity: 1, transition: { duration: 0.2 } },
   exit: { opacity: 0, transition: { duration: 0.2 } },
 };
 
@@ -48,13 +55,16 @@ export const TodoList: React.FC = () => {
                   </span>
                 </button>
                 <button
-                  className="p-1 rounded"
+                  className="p-1 rounded transition-colors"
                   aria-label="Delete task"
                   onClick={() => {
                     deleteTodo(todo.id);
                   }}
                 >
-                  <Trash size={20} className=" text-disc-dnd-red" />
+                  <Trash
+                    size={20}
+                    className="text-neutral-200 text-opacity-40 hover:text-disc-dnd-red"
+                  />
                 </button>
               </motion.li>
             ))}
@@ -64,9 +74,11 @@ export const TodoList: React.FC = () => {
       <AnimatePresence>
         {completedTasks.length > 0 && (
           <motion.button
-            variants={variants}
+            aria-label="Clear All Completed Tasks"
+            variants={btnVariants}
             initial="hidden"
             animate="visible"
+            whileHover="hover"
             exit="exit"
             className="p-1 rounded-lg text-neutral-200 bg-disc-not-so-blurple"
             onClick={clearCompleted}

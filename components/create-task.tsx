@@ -24,7 +24,7 @@ export const CreateTodo = ({ submitText }: CreateTodoProps) => {
   return (
     <form onSubmit={submitHandler} className="relative flex items-center gap-2">
       <input
-        className="flex-1 p-3 my-2 rounded-lg pl-11 text-neutral-200 placeholder:text-opacity-50 focus:outline-disc-not-so-blurple bg-disc-grey placeholder:text-neutral-200"
+        className="flex-1 p-3 my-2 rounded-lg pl-11 text-neutral-200 placeholder:text-opacity-50 focus-visible:outline-double focus-visible:outline-disc-not-so-blurple bg-disc-grey placeholder:text-neutral-200"
         value={todoText}
         onChange={userInputHandler}
         placeholder="Add your new task here!"

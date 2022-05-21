@@ -13,8 +13,8 @@ export const Header = () => {
   const pendingTasks = todosList.filter((todo) => !todo.completed);
 
   return (
-    <header className="flex items-center w-full px-4 h-14 bg-disc-not-quite-black">
-      <div className="flex items-center justify-between w-full max-w-screen-xl mx-auto">
+    <header className="flex items-center w-full h-14 bg-disc-not-quite-black">
+      <div className="flex items-center justify-between w-full max-w-4xl px-4 mx-auto">
         <h1 className="p-1 font-bold border rounded text-neutral-200 bg-disc-not-so-blurple border-neutral-200">
           Taskord
         </h1>
