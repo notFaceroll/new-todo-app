@@ -6,6 +6,16 @@ export const TodoProvider: React.FC<{ children: React.ReactNode }> = ({
 }) => {
   const [todosList, setTodosList] = useState<Todo[]>([]);
 
+  const editTodo = (id: string, text: string) => {
+    const updatedList = todosList.map((todo) => {
+      if (todo.id === id) {
+        return { ...todo, task: text };
+      }
+      return todo;
+    });
+    setTodosList(updatedList);
+  };
+
   const addTodo = (text: string) => {
     setTodosList([
       ...todosList,
@@ -51,6 +61,7 @@ export const TodoProvider: React.FC<{ children: React.ReactNode }> = ({
     deleteTodo,
     toggleTodo,
     clearCompleted,
+    editTodo,
   };
   return (
     <TodoContext.Provider value={todoContext}>{children}</TodoContext.Provider>

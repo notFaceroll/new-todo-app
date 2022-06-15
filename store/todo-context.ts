@@ -12,6 +12,7 @@ export type TodoContextType = {
   deleteTodo: (id: string) => void;
   toggleTodo: (id: string) => void;
   clearCompleted: () => void;
+  editTodo: (text: string, id: string) => void;
 };
 
 const defaultTodo: TodoContextType = {
@@ -20,6 +21,7 @@ const defaultTodo: TodoContextType = {
   deleteTodo: () => {},
   toggleTodo: () => {},
   clearCompleted: () => {},
+  editTodo:() => {},
 };
 
 const TodoContext = React.createContext<TodoContextType>(defaultTodo);
