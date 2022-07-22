@@ -12,7 +12,7 @@ const btnVariants = {
   exit: { opacity: 0, transition: { duration: 0.2 } },
 };
 
-export const TodoList: React.FC = () => {
+export const TodoList = () => {
   const { addTodo, todosList, clearCompleted } = useContext(TodoContext);
 
   const completedTasks = todosList.filter((todo) => todo.completed);

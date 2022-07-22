@@ -13,7 +13,7 @@ interface TodoProps {
   todo: Todo;
 }
 
-export const TaskItem: React.FC<TodoProps> = ({ todo }) => {
+export const TaskItem = ({ todo }: TodoProps) => {
   const [isEditing, setIsEditing] = useState(false);
   const [text, setText] = useState(todo.task);
 
